@@ -1,7 +1,9 @@
 #include "Trie.hpp"
 
 #include <fmt/format.hpp>
+#include <fmt/ranges.hpp>
 #include <fstream>
+#include <iostream>
 
 int main()
 {
@@ -14,12 +16,25 @@ int main()
 		return 1;
 	}
 
-	std::string dictionary_word;
-	while(dictionary_file >> dictionary_word)
-		dictionary_trie.push(dictionary_word);
+	{
+		std::string dictionary_word;
+		while(dictionary_file >> dictionary_word)
+			dictionary_trie.push(dictionary_word);
+	}
+
 	fmt::print(stderr, "Loaded dictionary words\n");
 
 	// REPL part
+	std::string user_input;
+	fmt::print("\033[32;1m\u276F\033[m ");
+	while(std::cin >> user_input)
+	{
+		const auto suggestions = dictionary_trie.get_matches(user_input, 8ULL);
+		fmt::print("  \033[34m{}\033[m\n",
+				   fmt::join(suggestions.cbegin(), suggestions.cend(), "\n  "));
+
+		fmt::print("\033[32;1m\u276F\033[m ");
+	}
 
 	return 0;
 }
