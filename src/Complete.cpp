@@ -22,7 +22,8 @@ int main()
 			dictionary_trie.push(dictionary_word);
 	}
 
-	fmt::print(stderr, "Loaded dictionary words\n");
+	// TODO: Add nice REPL stuff like a history with up and down keys, maybe going back and editing
+	// the buffer?
 
 	// REPL part
 	std::string user_input;
