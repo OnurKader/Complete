@@ -1,0 +1,7 @@
+CXX       := g++ -fdiagnostics-color=always
+CXX_FLAGS := -O3 -std=c++2a -Wall -Wextra -Wformat-overflow=2 -Wpedantic -Wshadow -Wmissing-include-dirs -Wuninitialized -Wduplicated-branches -Wduplicated-cond -Wfloat-equal -Wconversion -Wcast-qual -Wmissing-declarations
+CXX_LIBS  :=
+
+!cxx = |> $(CXX) -c %f -o %o $(CXX_LIBS) $(CXX_FLAGS) |> %B.o
+!exe = |> $(CXX) -o %o %f $(CXX_LIBS) $(CXX_FLAGS) |>
+

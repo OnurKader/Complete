@@ -1,0 +1,7 @@
+include_rules
+
+EXE := Complete
+
+: foreach *.cpp |> !cxx |> {objs}
+: {objs} |> !exe |> $(EXE)
+
