@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chrono>
-#include <fmt/format.h>
+#include <fmt/core.hpp>
 #include <string_view>
 
 using hr_clock = std::chrono::high_resolution_clock;

@@ -4,6 +4,7 @@ EXE := ../bin/Complete
 TEST := ../bin/Trie_test
 
 CXX_LIBS += -I../include
+CXX_FLAGS += -g3
 
 : Trie.cpp |> !cxx |> {trieo}
 : Complete.cpp |> !cxx |> {maino}
