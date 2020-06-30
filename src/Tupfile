@@ -1,7 +1,13 @@
 include_rules
 
-EXE := Complete
+EXE := ../bin/Complete
+TEST := ../bin/Trie_test
 
-: foreach *.cpp |> !cxx |> {objs}
-: {objs} |> !exe |> $(EXE)
+CXX_LIBS += -I../include
+
+: Trie.cpp |> !cxx |> {trieo}
+: Complete.cpp |> !cxx |> {maino}
+: Trie_test.cpp |> !cxx |> {testo}
+: {trieo} {maino} |> !exe |> $(EXE)
+: {trieo} {testo} |> !exe |> $(TEST)
 
