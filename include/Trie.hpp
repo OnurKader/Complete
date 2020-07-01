@@ -4,7 +4,7 @@
 
 #include <array>
 #include <memory>
-#include <string_view>
+#include <string>
 #include <vector>
 
 namespace OK
@@ -14,7 +14,7 @@ static constexpr auto LETTER_COUNT = 26ULL;
 // FIXME: Switch to using unique_ptr's both in Node and Trie, and just get a pointer
 struct Node final
 {
-	std::array<std::shared_ptr<Node>, LETTER_COUNT> children {nullptr};
+	std::array<std::unique_ptr<Node>, LETTER_COUNT> children {nullptr};
 	bool is_leaf {false};
 };
 
@@ -22,17 +22,16 @@ class Trie final
 {
 public:
 	void push(const std::string& word);
-	bool search(const std::string_view) const noexcept;
+	bool search(const std::string& word) const noexcept;
 	std::vector<std::string> get_matches(const std::string& prefix,
 										 const std::size_t match_count) const;
 
 	std::size_t word_count() const noexcept { return m_word_count; }
-	auto root() const noexcept { return m_root; }
 
 	void print();
 
 private:
-	std::shared_ptr<Node> m_root {std::make_shared<Node>()};
+	std::unique_ptr<Node> m_root {std::make_unique<Node>()};
 	std::size_t m_word_count {0ULL};
 };
 

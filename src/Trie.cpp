@@ -5,16 +5,16 @@ namespace OK
 void Trie::push(const std::string& word)
 {
 	bool word_exists = true;
-	std::shared_ptr<Node> current {m_root};
+	Node* current {m_root.get()};
 	for(auto&& letter: word)
 	{
 		auto& child_letter = current->children[char_to_index(letter)];
 		if(child_letter == nullptr)
 		{
 			word_exists = false;
-			child_letter = std::make_shared<Node>();
+			child_letter = std::make_unique<Node>();
 		}
-		current = child_letter;
+		current = child_letter.get();
 	}
 
 	// Well this is stupid...
@@ -22,13 +22,13 @@ void Trie::push(const std::string& word)
 	current->is_leaf = true;
 }
 
-bool Trie::search(const std::string_view word) const noexcept
+bool Trie::search(const std::string& word) const noexcept
 {
-	std::shared_ptr<Node> current {m_root};
+	Node* current {m_root.get()};
 
 	for(auto&& letter: word)
 	{
-		const auto& child_letter = current->children[char_to_index(letter)];
+		const auto child_letter = current->children[char_to_index(letter)].get();
 		if(child_letter == nullptr)
 			return false;
 		current = child_letter;
@@ -37,7 +37,7 @@ bool Trie::search(const std::string_view word) const noexcept
 	return current->is_leaf;
 }
 
-void push_words_into_vector_recursively(const std::shared_ptr<Node> root,
+void push_words_into_vector_recursively(const Node* root,
 										char word[],
 										std::vector<std::string>& vec,
 										const std::size_t level,
@@ -58,14 +58,14 @@ void push_words_into_vector_recursively(const std::shared_ptr<Node> root,
 		{
 			word[level] = index_to_char(i);
 			push_words_into_vector_recursively(
-				root->children[i], word, vec, level + 1ULL, match_count);
+				root->children[i].get(), word, vec, level + 1ULL, match_count);
 		}
 	}
 }
 
 std::vector<std::string> Trie::get_matches(const std::string& prefix, std::size_t match_count) const
 {
-	std::shared_ptr<Node> current {m_root};
+	Node* current {m_root.get()};
 	char word[32ULL];
 	std::strcpy(word, prefix.c_str());
 	std::vector<std::string> words;
@@ -73,7 +73,7 @@ std::vector<std::string> Trie::get_matches(const std::string& prefix, std::size_
 
 	for(auto&& letter: prefix)
 	{
-		const auto& child_letter = current->children[char_to_index(letter)];
+		const auto child_letter = current->children[char_to_index(letter)].get();
 		if(child_letter != nullptr)
 			current = child_letter;
 	}
@@ -83,7 +83,7 @@ std::vector<std::string> Trie::get_matches(const std::string& prefix, std::size_
 	return words;
 }
 
-void print_(const std::shared_ptr<Node> root, char word[], const std::size_t level)
+void print_(const Node* root, char word[], const std::size_t level)
 {
 	if(root->is_leaf)
 	{
@@ -96,7 +96,7 @@ void print_(const std::shared_ptr<Node> root, char word[], const std::size_t lev
 		if(root->children[i])
 		{
 			word[level] = index_to_char(i);
-			print_(root->children[i], word, level + 1ULL);
+			print_(root->children[i].get(), word, level + 1ULL);
 		}
 	}
 }
@@ -104,7 +104,7 @@ void print_(const std::shared_ptr<Node> root, char word[], const std::size_t lev
 void Trie::print()
 {
 	char word[32ULL];
-	print_(m_root, word, 0ULL);
+	print_(m_root.get(), word, 0ULL);
 }
 
 }	 // namespace OK
