@@ -63,6 +63,8 @@ void push_words_into_vector_recursively(const Node* root,
 	}
 }
 
+// FIXME: okasas or some random shit like ppppp fails, if it doesn't exist. Oh maybe have a
+// is_leaf'less search and do it here
 std::vector<std::string> Trie::get_matches(const std::string& prefix, std::size_t match_count) const
 {
 	Node* current {m_root.get()};
@@ -74,8 +76,9 @@ std::vector<std::string> Trie::get_matches(const std::string& prefix, std::size_
 	for(auto&& letter: prefix)
 	{
 		const auto child_letter = current->children[char_to_index(letter)].get();
-		if(child_letter != nullptr)
-			current = child_letter;
+		if(child_letter == nullptr)
+			return {"No Matches Found"};
+		current = child_letter;
 	}
 
 	push_words_into_vector_recursively(current, word, words, prefix.size(), match_count);
