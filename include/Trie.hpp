@@ -11,7 +11,7 @@ namespace OK
 {
 static constexpr auto LETTER_COUNT = 26ULL;
 
-// Ugh, can't design it with unique_ptr's
+// FIXME: Switch to using unique_ptr's both in Node and Trie, and just get a pointer
 struct Node final
 {
 	std::array<std::shared_ptr<Node>, LETTER_COUNT> children {nullptr};
