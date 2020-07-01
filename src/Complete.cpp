@@ -5,6 +5,15 @@
 #include <fstream>
 #include <iostream>
 
+std::string to_lower(const std::string& str)
+{
+	std::string temp {str};
+	std::transform(temp.cbegin(), temp.cend(), temp.begin(), [](const auto& chr) {
+		return std::tolower(chr);
+	});
+	return temp;
+}
+
 int main()
 {
 	OK::Trie dictionary_trie;
@@ -30,7 +39,7 @@ int main()
 	fmt::print("\033[32;1m\u276F\033[m ");
 	while(std::cin >> user_input)
 	{
-		const auto suggestions = dictionary_trie.get_matches(user_input, 8ULL);
+		const auto suggestions = dictionary_trie.get_matches(to_lower(user_input), 8ULL);
 		fmt::print("  \033[34m{}\033[m\n",
 				   fmt::join(suggestions.cbegin(), suggestions.cend(), "\n  "));
 
