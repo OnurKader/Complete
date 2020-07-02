@@ -65,8 +65,6 @@ void push_words_into_vector_recursively(const Node* root,
 	}
 }
 
-// FIXME: okasas or some random shit like ppppp fails, if it doesn't exist. Oh maybe have a
-// is_leaf'less search and do it here
 std::vector<std::string> Trie::get_matches(const std::string& prefix,
 										   const std::size_t match_count) const noexcept
 {
