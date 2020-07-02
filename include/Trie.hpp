@@ -23,7 +23,7 @@ public:
 	void push(const std::string& word);
 	bool search(const std::string& word) const noexcept;
 	std::vector<std::string> get_matches(const std::string& prefix,
-										 const std::size_t match_count) const;
+										 const std::size_t match_count) const noexcept;
 
 	std::size_t word_count() const noexcept { return m_word_count; }
 
@@ -45,4 +45,3 @@ constexpr char index_to_char(const std::size_t index) noexcept
 }
 
 }	 // namespace OK
-
