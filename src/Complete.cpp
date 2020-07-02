@@ -32,7 +32,7 @@ int main()
 	fmt::print("\033[32;1m\u276F\033[m ");
 	while(std::cin >> user_input)
 	{
-		const auto suggestions = dictionary_trie.get_matches(to_lower(user_input), 8ULL);
+		const auto suggestions = dictionary_trie.get_matches(to_lower(user_input), 10ULL);
 		if(suggestions.empty())
 		{
 			fmt::print(stderr, "\033[31;1mNo matches found\033[m\n");
