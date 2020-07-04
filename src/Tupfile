@@ -7,7 +7,8 @@ CXX_LIBS += -I../include
 
 : Trie.cpp |> !cxx |> {trieo}
 : Complete.cpp |> !cxx |> {maino}
+: Term.cpp |> !cxx |> {termo}
 : Trie_test.cpp |> !cxx |> {testo}
-: {trieo} {maino} |> !exe |> $(EXE)
+: {trieo} {maino} {termo} |> !exe |> $(EXE)
 : {trieo} {testo} |> !exe |> $(TEST)
 
