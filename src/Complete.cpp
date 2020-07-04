@@ -15,7 +15,7 @@ std::string to_lower(const std::string& str);
 bool resized = false;
 
 // FIXME: Something to do with the terminal size
-const std::size_t match_count = 24ULL;
+const std::size_t match_count = 27ULL;
 
 int main()
 {
@@ -37,11 +37,7 @@ int main()
 			dictionary_trie.push(dictionary_word);
 	}
 
-	// TODO: Add nice REPL stuff like a history with up and down keys, maybe going back and editing
-	// the buffer?
 	Term term;
-
-	// term.alt_screen(true);
 	term.echo(false);
 	term.icanon(false);
 	term.show_cursor(true);
@@ -51,6 +47,10 @@ int main()
 	bool running = true;
 
 	std::vector<std::string> previous_user_words;
+	previous_user_words.reserve(4ULL);
+
+	std::size_t vector_index = 0ULL;
+
 	std::string user_input;
 	while(running)
 	{
@@ -96,10 +96,45 @@ int main()
 						std::cin >> chr;
 						switch(chr)
 						{
-							case 'A': fmt::print("\033[AA"); break;	   // Up
-							case 'B': fmt::print("\033[BB"); break;	   // Down
-							case 'C':								   // Right
-							case 'D': break;						   // Left
+							case 'A':
+							{
+								// FIXME: Function or just clean the word getting part
+								if(vector_index != previous_user_words.size())
+									++vector_index;
+								user_input = *(previous_user_words.cend() - vector_index);
+								term.cls();
+								// This below needs to be a local lambda
+								const auto suggestions =
+									dictionary_trie.get_matches(user_input, match_count);
+								if(!suggestions.empty())
+								{
+									fmt::print("\033[2H  \033[34m{}\033[m",
+											   fmt::join(suggestions.cbegin(),
+														 suggestions.cend(),
+														 "\n  "));
+								}
+								break;
+							}	 // Up
+							case 'B':
+							{
+								if(vector_index != 0)
+									--vector_index;
+								user_input = *(previous_user_words.cend() - vector_index);
+								term.cls();
+								// This below needs to be a local lambda
+								const auto suggestions =
+									dictionary_trie.get_matches(user_input, match_count);
+								if(!suggestions.empty())
+								{
+									fmt::print("\033[2H  \033[34m{}\033[m",
+											   fmt::join(suggestions.cbegin(),
+														 suggestions.cend(),
+														 "\n  "));
+								}
+								break;
+							}					// Down
+							case 'C':			// Right
+							case 'D': break;	// Left
 							default: fmt::print("{}", chr);
 						}
 
