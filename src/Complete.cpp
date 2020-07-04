@@ -17,14 +17,17 @@ bool resized = false;
 // FIXME: Something to do with the terminal size
 const std::size_t match_count = 27ULL;
 
-int main()
+int main(int, char** argv)
 {
 	std::signal(SIGINT, handle_interrupt);
 	std::signal(SIGWINCH, handle_resize);
 
 	OK::Trie dictionary_trie;
 
-	std::ifstream dictionary_file {"../data/dictionary.txt"};
+	std::string cwd {argv[0]};
+	cwd.erase(cwd.begin() + cwd.find_last_of('/'), cwd.end());
+
+	std::ifstream dictionary_file {cwd + "/../data/dictionary.txt"};
 	if(!dictionary_file)
 	{
 		fmt::print("Couldn't open dictionary file '../data/dictionary.txt'\n");
