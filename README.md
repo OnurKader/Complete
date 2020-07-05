@@ -16,5 +16,5 @@ I don't know just tup in root and it builds in bin/
 
 ![Sample Image](data/sample_screenshot.png "A simple representation of its current state")
 
-[![Demo GIF](https://asciinema.org/a/ZhSBlpZ2QxJUPP1rZVAUlYcyE.svg)](https://asciinema.org/a/ZhSBlpZ2QxJUPP1rZVAUlYcyE)
+[![Demo GIF](https://asciinema.org/a/345418.svg)](https://asciinema.org/a/345418)
 
